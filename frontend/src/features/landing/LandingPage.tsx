@@ -1,4 +1,13 @@
-import { ArrowRight, ArrowUp, CornerDownRight, FileText, Plus, SearchX } from "lucide-react";
+import {
+  ArrowRight,
+  ArrowUp,
+  CornerDownRight,
+  FileText,
+  Plus,
+  SearchX,
+  ShieldCheck,
+  Sparkles,
+} from "lucide-react";
 import { useState } from "react";
 import type { ReactNode } from "react";
 import { Link } from "react-router";
@@ -362,29 +371,39 @@ export function LandingPage() {
 
       <main>
         <section className={styles.hero}>
-          <div className={styles.container}>
-            <p className={styles.pill}>
-              Hybrid retrieval <span /> Cross-encoder reranking <span /> Enforced citations
-            </p>
-            <h1 className={styles.headline}>Answers your whole company can check.</h1>
-            <p className={styles.lede}>
-              Enterprise RAG searches your policies, handbooks and procedures, then answers in plain
-              language with a citation on every claim. When the documents don&apos;t cover a
-              question, it says so.
-            </p>
-            <div className={styles.actions}>
-              <Link to="/chat" className={styles.primary}>
-                Start asking
-                <ArrowRight size={16} />
-              </Link>
-              <a href="#how-it-works" className={styles.secondary}>
-                How it works
-              </a>
+          <div className={styles.heroLayout}>
+            <div className={styles.container}>
+              <p className={styles.pill}>
+                <Sparkles size={14} aria-hidden="true" />
+                <span>Grounded answers</span>
+                <span className={styles.pillDivider} aria-hidden="true" />
+                <span>With source citations</span>
+              </p>
+              <h1 className={styles.headline}>
+                Answers your whole company <span>can check.</span>
+              </h1>
+              <p className={styles.lede}>
+                Enterprise RAG searches your policies, handbooks and procedures, then answers in
+                plain language with a citation on every claim. When the documents don&apos;t cover a
+                question, it says so.
+              </p>
+              <div className={styles.actions}>
+                <Link to="/chat" className={styles.primary}>
+                  Start asking
+                  <ArrowRight size={16} />
+                </Link>
+                <a href="#how-it-works" className={styles.secondary}>
+                  How it works
+                </a>
+              </div>
+              <p className={styles.note}>
+                <ShieldCheck size={15} aria-hidden="true" />
+                No sign-up <span /> Conversations stay in your browser
+              </p>
             </div>
-            <p className={styles.note}>No sign-up. Conversations stay in your browser.</p>
-          </div>
-          <div className={styles.previewWrap}>
-            <AppPreview />
+            <div className={styles.previewWrap}>
+              <AppPreview />
+            </div>
           </div>
         </section>
 
