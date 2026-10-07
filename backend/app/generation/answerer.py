@@ -156,6 +156,7 @@ class AbstainGate:
         if self.suppressed or self.released:
             return ""
         self.released = True
+        return self.buffer
         text, self.buffer = self.buffer, ""
         return text
 
