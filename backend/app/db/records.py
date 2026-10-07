@@ -110,7 +110,7 @@ class MessageRecord:
         return {
             "_id": self.id,
             "session_id": self.session_id,
-            "role": self.role.value,
+            "role": self.role,value,
             "content": self.content,
             "status": self.status.value if self.status else None,
             "citations": self.citations,
