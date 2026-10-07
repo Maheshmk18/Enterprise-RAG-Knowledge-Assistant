@@ -3,7 +3,7 @@ from collections.abc import Sequence
 from app.generation.llm import ChatMessage
 from app.retrieval.retriever import Passage
 
-ABSTAIN_TOKEN = "INSUFFICIENT_CONTEXT"
+ABSTAIN_TOKEN = "I don't have enough information to answer that."
 
 NO_ANSWER_MESSAGE = (
     "I couldn't find an answer to that in the documents I have access to. "
