@@ -37,7 +37,7 @@ UNAVAILABLE_MESSAGE = "The assistant is temporarily unavailable. Please try agai
 
 
 def sse(event: str, data: Any) -> str:
-    return f"event: {event}\ndata: {json.dumps(data, default=str)}\n\n"
+    return f"event: {event}\ndata: {data if isinstance(data, str) else json.dumps(data, default=str)}\n\n"
 
 
 def message_payload(message: MessageRecord) -> dict[str, Any]:
