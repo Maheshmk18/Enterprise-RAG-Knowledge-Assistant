@@ -103,7 +103,7 @@ def answer_events(
                 yield sse("replace", {"text": event.text})
             elif isinstance(event, DoneEvent):
                 saved = chat_service.add_answer(db, session_id, event.answer)
-                yield sse("answer", message_payload(saved))
+                yield sse("answer", message_payload(saved)); yield sse("token", {"text": saved.content})
                 logger.info(
                     "question answered",
                     extra={
