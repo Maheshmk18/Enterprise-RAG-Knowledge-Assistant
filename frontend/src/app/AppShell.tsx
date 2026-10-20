@@ -50,7 +50,11 @@ export function AppShell() {
             Upload documents
           </Button>
         </div>
-        <ConversationList sessions={sessions.data ?? []} loading={sessions.isPending} />
+        <ConversationList
+          sessions={sessions.data ?? []}
+          loading={sessions.isPending}
+          error={sessions.isError && sessions.data === undefined}
+        />
         <nav className={styles.nav} aria-label="Workspace">
           <NavLink to="/documents" className={navClass}>
             <FileText size={15} />

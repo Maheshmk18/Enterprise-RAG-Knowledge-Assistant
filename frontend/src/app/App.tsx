@@ -24,7 +24,12 @@ const queryClient = new QueryClient({
     queries: {
       staleTime: 30_000,
       refetchOnWindowFocus: false,
-      retry: (count, error) => !(error instanceof ApiError && error.status < 500) && count < 2,
+      retry: (count, error) => {
+        const transient =
+          (error instanceof ApiError && error.status >= 500) || error instanceof TypeError;
+        return transient && count < 9;
+      },
+      retryDelay: (attempt) => Math.min(1000 * 2 ** attempt, 8000),
     },
   },
 });

@@ -1,8 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { RotateCw, Trash2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/Badge";
 import type { Tone } from "@/components/ui/Badge";
-import { IconButton } from "@/components/ui/Button";
+import { Button, IconButton } from "@/components/ui/Button";
 import { EmptyState, PageHeader } from "@/components/ui/PageHeader";
 import { Spinner } from "@/components/ui/Spinner";
 import table from "@/components/ui/Table.module.css";
@@ -77,6 +78,7 @@ function DocumentRow({ document }: { document: DocumentItem }) {
 
 export function DocumentsPage() {
   const uploader = useUploader();
+  const [slowLoad, setSlowLoad] = useState(false);
 
   const documents = useQuery({
     queryKey: ["documents"],
@@ -86,6 +88,12 @@ export function DocumentsPage() {
         ? 2000
         : false,
   });
+
+  useEffect(() => {
+    if (!documents.isPending) return;
+    const timeout = window.setTimeout(() => setSlowLoad(true), 5000);
+    return () => window.clearTimeout(timeout);
+  }, [documents.isPending]);
 
   const items = documents.data ?? [];
   const ready = items.filter((item) => item.status === "ready");
@@ -111,9 +119,30 @@ export function DocumentsPage() {
       </section>
 
       {documents.isPending ? (
-        <div className={styles.loading}>
-          <Spinner size={18} label="Loading documents" />
-        </div>
+        <>
+          <div className={styles.loading}>
+            <Spinner size={18} label="Loading documents" />
+          </div>
+          {slowLoad && (
+            <p className={styles.help} role="status">
+              Connecting to the server. On Render Free, waking after inactivity can take about a
+              minute; keep this page open.
+            </p>
+          )}
+        </>
+      ) : documents.isError && documents.data === undefined ? (
+        <EmptyState title="Could not load documents">
+          <p>{documents.error.message}</p>
+          <Button
+            icon={<RotateCw size={15} />}
+            onClick={() => {
+              setSlowLoad(false);
+              void documents.refetch();
+            }}
+          >
+            Try again
+          </Button>
+        </EmptyState>
       ) : items.length === 0 ? (
         <EmptyState title="No documents yet">
           Upload a policy, handbook or guide to get started.

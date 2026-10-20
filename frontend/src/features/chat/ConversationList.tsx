@@ -10,7 +10,15 @@ import styles from "./ConversationList.module.css";
 
 const ORDER: Bucket[] = ["Today", "Yesterday", "Previous 7 days", "Older"];
 
-export function ConversationList({ sessions, loading }: { sessions: Session[]; loading: boolean }) {
+export function ConversationList({
+  sessions,
+  loading,
+  error,
+}: {
+  sessions: Session[];
+  loading: boolean;
+  error: boolean;
+}) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { sessionId } = useParams();
@@ -33,7 +41,19 @@ export function ConversationList({ sessions, loading }: { sessions: Session[]; l
 
   return (
     <div className={styles.list}>
-      {!loading && sessions.length === 0 && (
+      {!loading && error && (
+        <div className={styles.empty}>
+          <p>Could not load conversations.</p>
+          <button
+            type="button"
+            className={styles.retry}
+            onClick={() => void queryClient.refetchQueries({ queryKey: ["sessions"] })}
+          >
+            Try again
+          </button>
+        </div>
+      )}
+      {!loading && !error && sessions.length === 0 && (
         <p className={styles.empty}>Your conversations will appear here.</p>
       )}
       {groups.map((group) => (
